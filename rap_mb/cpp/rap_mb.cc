@@ -48,14 +48,14 @@ public:
     const double dv = input_dict.at("delta_v");
     const double divg = input_dict.at("angular_divg");
     // simulations params
-    const double rel_tol = 1.0e-8; // relative error
-    const double abs_tol = 1.0e-10; // absolute error
+    const double rel_tol = 1.0e-6; // relative error
+    const double abs_tol = 1.0e-8; // absolute error
     const double Ns = input_dict.at("N_samples");
     const double Nt = input_dict.at("N_tstep");
     const double U0 = input_dict.at("U0");
     const double V0 = input_dict.at("V0");
     const double W0 = input_dict.at("W0");
-    const int max_tsteps = 10000;
+    const int max_tsteps = 20000;
     // Calculating parameter for optical-bloch equations.
     double omega_10 = 2.0*pi*c/(wl_nm*1e-9);  
     double w_x0 = f*wl_nm*1.0e-7/(r*pi);
