@@ -1,0 +1,22 @@
+name: rap-mb
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pybind11
+  - numpy
+  - scipy
+  - matplotlib
+  - sphinx
+  - cmake
+  - jupyter
+  - notebook
+  - sundials
+  - mkl-devel
+  - dpcpp-cpp-rt 
+  - dpcpp_linux-64
+  - intel-cmplr-lib-rt 
+  - intel-cmplr-lic-rt 
+  - intel-fortran-rt 
+  - intel-openmp

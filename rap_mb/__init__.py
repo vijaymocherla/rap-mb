@@ -1,4 +1,9 @@
-# A python interface for rap_mb
+#!/usr/bin/env python
+#
+# Author : Sai Vijay Mocherla <vijaysai.mocherla@gmail.com>
+#
+from rap_mb import cpp
+from rap_mb import helpers
 
-from ._rap_mb import * 
-from . import helpers
+__version__ = '0.1.0.'
+__author__ = 'Sai Vijay Mocherla'
