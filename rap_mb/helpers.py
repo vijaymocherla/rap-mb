@@ -2,6 +2,10 @@
 import numpy as np
 from scipy.constants import c, epsilon_0, hbar
 
+import matplotlib as mpl
+mpl.rc('text', usetex=True)
+mpl.rc('font', family='sans-serif', serif='computer modern')
+import matplotlib.pyplot as plt
 # f     : focal length of the lens [cm]
 # wl_nm : wavelength of the light [nm]
 # r     : radius of the laser beam [cm]
@@ -90,6 +94,26 @@ def sample_velocities(v, delta_v, divergence):
     vz = v0*np.sin(gamma)
     return vx, vy, vz
 
+def plot_property_data(data, x_key, param_key, 
+                           title='', legend_title='', label_format='4.2f', legend_loc=(.80, .50),
+                           xlabel='', xlim=[], 
+                           figsize=(5,4), save_fig=False, filename=''):
+    fig, ax = plt.subplots(figsize=figsize)
+    x = data[x_key]
+    param_data = data[param_key]
+    for ki in param_data:
+        label = ('{k:'+label_format+'}').format(k=ki)
+        ax.plot(x, param_data[ki], label=label)
+    ax.legend(bbox_to_anchor=legend_loc, frameon=True, title=legend_title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(r'$\textbf{N}_{ex}$')
+    ax.set_xlim(np.min(x), np.max(x))
+    if xlim != []:
+        ax.set_xlim(xlim[0], xlim[1])
+    ax.set_title(title)
+    if save_fig:
+        fig.savefig(filename, dpi=300)
+    return fig, ax
 
 # from scipy.integrate import solve_ivp
 

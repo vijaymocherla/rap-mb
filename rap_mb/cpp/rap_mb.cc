@@ -48,14 +48,14 @@ public:
     const double dv = input_dict.at("delta_v");
     const double divg = input_dict.at("angular_divg");
     // simulations params
-    const double rel_tol = 1.0e-6; // relative error
-    const double abs_tol = 1.0e-8; // absolute error
-    const double Ns = input_dict.at("N_samples");
-    const double Nt = input_dict.at("N_tstep");
     const double U0 = input_dict.at("U0");
     const double V0 = input_dict.at("V0");
     const double W0 = input_dict.at("W0");
-    const int max_tsteps = 20000;
+    const double Ns = input_dict.at("N_samples");
+    const double rel_tol = input_dict.at("rel_tol");    // relative error
+    const double abs_tol = input_dict.at("abs_tol");    // absolute error
+    const double dt_max = input_dict.at("dt_max");      // maximum size of dt    
+    const int max_tsteps = input_dict.at("max_tsteps"); // maximum number of time steps
     // Calculating parameter for optical-bloch equations.
     double omega_10 = 2.0*pi*c/(wl_nm*1e-9);  
     double w_x0 = f*wl_nm*1.0e-7/(r*pi);
@@ -125,7 +125,6 @@ public:
         double T = 2.0*(w_x*1.0e-2)/vel_xyz[0];
         double ti = -1.50*T;
         double tf = 1.50*T;
-        double dt = 3.0*T/Nt;
         // initiating the state vector and set psi0
         N_Vector psi0 = N_VNew_Serial(3, sunctx); 
         NV_Ith_S(psi0, 0) = U0;
@@ -137,7 +136,7 @@ public:
         // setting tolerances
         ERKStepSStolerances(arkode_mem, rel_tol, abs_tol);
         // setting max stepsize
-        ERKStepSetMaxStep(arkode_mem, dt);
+        ERKStepSetMaxStep(arkode_mem, dt_max);
         //setting max number of steps
         ERKStepSetMaxNumSteps(arkode_mem, max_tsteps);
         // Setting Butcher Table of the method
@@ -157,7 +156,7 @@ public:
     double monte_carlo(){
         double W_avg = 0.0;
         // parallelizing the Monte Carlo runs
-        const int nthr = omp_get_num_threads();
+        const int nthr = 4; //omp_get_num_threads();
         omp_set_num_threads(nthr);
         #pragma omp parallel for reduction(+:W_avg)
         for (int i=0; i<int(Ns); i++) {

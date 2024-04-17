@@ -6,6 +6,7 @@ To optimize computational efficiency and ease of use, `rap-mb` is written in C++
 
 
 In the following jupyter notebooks we illustrate the usuage of this program with a few examples.
+- [example.ipynb](notebooks/example.ipynb)
 - [jcp-methane.ipynb](notebooks/jcp-methane.ipynb)
 - [carbon-monoxide.ipynb](notebooks/carbon-monoxide.ipynb)
 
@@ -47,19 +48,17 @@ pip install -e .
 
 SUNDIALS is a SUite of Nonlinear and DIfferential/ALgebraic equation Solvers developed and maintained by LLNL. 
 
-Here's a breif walkthrough on building SUNDIALS from source. A more detailed guide can be found [here](https://sundials.readthedocs.io/en/latest/sundials/Install_link.html#building-and-installing-with-cmake). 
+Here's a breif walkthrough on building SUNDIALS from source on linux distribution. A more detailed guide can be found [here](https://sundials.readthedocs.io/en/latest/sundials/Install_link.html#building-and-installing-with-cmake). 
 
 ### Dependencies
 
-- Make sure you have install `intel-oneapi`'s base  and HPC toolkits. This should basically install the intel compilers (icx, icpx and ifx) and, with them the libraries math kernel libraries (MKL, LAPACK, BLAS etc.) and, parallel processing libraries (MPI, openMP, SYCL etc.). Make sure to intialise (activate) the intel oneapi environment. 
-
+- For optimal performance, we will build `SUNDIALS` using intel compilers. Therefore, make sure that you have `intel-oneapi`'s base  and HPC toolkits installed on your machine. These can be installed using `apt` or `yum` depeding on your linux distro. This should basically install the intel compilers (icx, icpx and ifx) and, with them the libraries math kernel libraries (MKL, LAPACK, BLAS etc.) and, parallel processing libraries (MPI, openMP, SYCL etc.). Make sure to intialise (activate) the intel oneapi environment. 
 ```
 source /opt/intel/oneapi/setvars.sh
 ```
+> Note: It should also be possible to build `SUNDIALS` using the GNU compilers (gcc, g++ and gfortran) along with equivalent GNU math/parallel-processing libraries like OpenBLAS, openMP, mpich.
 
-> Note: One could also install SUNDIALS using the GNU equivalents: gcc, g++ and gfortran, along with openBLAS, openMP, mpich.
-
-- cmake and cmake-gui are needed for this installation. This can be done as follows:
+- cmake and cmake-gui are needed for this installation.
     ```
     sudo apt install cmake
     sudo apt install cmake-curses-gui
