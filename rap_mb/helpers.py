@@ -94,16 +94,20 @@ def sample_velocities(v, delta_v, divergence):
     vz = v0*np.sin(gamma)
     return vx, vy, vz
 
-def plot_property_data(data, x_key, param_key, 
-                           title='', legend_title='', label_format='4.2f', legend_loc=(.80, .50),
-                           xlabel='', xlim=[], 
-                           figsize=(5,4), save_fig=False, filename=''):
+def plot_property_data(data, x_key, param_key, title='', 
+                    legend_title='', label_format='4.2f', legend_loc=(.80, .50),
+                    colors={},
+                    xlabel='', xlim=[], 
+                    figsize=(5,4), save_fig=False, filename=''):
     fig, ax = plt.subplots(figsize=figsize)
     x = data[x_key]
     param_data = data[param_key]
+    if colors=={}:
+        tableau_palette = ['blue', 'orange','green','red','purple','brown','pink','gray','olive','cyan']
+        colors = {ki: tableau_palette[i] for i, ki in enumerate(param_data.keys())}
     for ki in param_data:
         label = ('{k:'+label_format+'}').format(k=ki)
-        ax.plot(x, param_data[ki], label=label)
+        ax.plot(x, param_data[ki], label=label, color=colors[ki])
     ax.legend(bbox_to_anchor=legend_loc, frameon=True, title=legend_title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(r'$\textbf{N}_{ex}$')

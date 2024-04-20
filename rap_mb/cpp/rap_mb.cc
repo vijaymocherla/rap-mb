@@ -62,8 +62,8 @@ public:
     double w_y0 = r;
     double zr_x = pi*pow(w_x0, 2.0)/(wl_nm*1.0e-7);
     double zr_y = pi*pow(w_y0, 2.0)/(wl_nm*1.0e-7);
-    double w_x = w_x0*sqrt(1.0+pow((zi/zr_x), 2.0));
-    double w_y = w_y0*sqrt(1.0+pow((zi/zr_y), 2.0));
+    double w_x = w_x0*sqrt(1.0 + pow((zi/zr_x), 2.0));
+    double w_y = r;//w_y0*sqrt(1.0 + pow((zi/zr_y), 2.0));
     double roc_zx = zi + pow(zr_x, 2.0)/zi;
     double roc_zy = zi + pow(zr_y, 2.0)/zi;
     double E0 = sqrt(4.0*P/(epsilon_0*c*pi*w_x*w_y*1e-4));
@@ -156,8 +156,9 @@ public:
     double monte_carlo(){
         double W_avg = 0.0;
         // parallelizing the Monte Carlo runs
-        const int nthr = 4; //omp_get_num_threads();
-        omp_set_num_threads(nthr);
+        if (getenv("OMP_NUM_THREADS") == nullptr){
+            omp_set_num_threads(1);
+        };
         #pragma omp parallel for reduction(+:W_avg)
         for (int i=0; i<int(Ns); i++) {
             W_avg += ivp_solve();
