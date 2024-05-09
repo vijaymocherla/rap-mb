@@ -15,10 +15,10 @@
 
 // Some Fundamental Constants
 const double pi = M_PI;
-const double c = 299792458.0;               // speed of light in m/s
-const double hbar = 1.054571817E-34;        // reduced Planck's constant in Js
-const double epsilon_0 = 8.8541878128E-12; // vacuum electric permittivity in F/m 
-
+const double c = 299792458.0;                   // speed of light in m/s
+const double hbar = 1.054571817E-34;            // reduced Planck's constant in Js
+const double epsilon_0 = 8.8541878128E-12;      // vacuum electric permittivity in F/m 
+const double SQRT_8_LN_2 = 2.3548200450309493;  // sqrt(8*ln(2))
 // a data structure to hold bloch params
 struct bloch_params{
     double E0; 
@@ -45,8 +45,8 @@ public:
     // beam params
     const double v = input_dict.at("velocity");
     const double mu_10 = input_dict.at("dipole_mom");
-    const double dv = input_dict.at("delta_v");
-    const double divg = input_dict.at("angular_divg");
+    const double v_fwhm = input_dict.at("velocity_fwhm");
+    const double ang_divg_fwhm = input_dict.at("divergence_fwhm");
     // simulations params
     const double U0 = input_dict.at("U0");
     const double V0 = input_dict.at("V0");
@@ -73,16 +73,15 @@ public:
         // Random number generator
         std::random_device rd;
         std::mt19937 gen_rnd(rd());
-        double v_fwhm = v*dv/100.0;
-        std::normal_distribution<double> vel_dist(v, v_fwhm/2.0);
-        std::normal_distribution<double> ang_dist(0.0, divg);
+        double v_sigma = v_fwhm/SQRT_8_LN_2;
+        double ang_divg_sigma = ang_divg_fwhm/SQRT_8_LN_2;
+        std::normal_distribution<double> vel_dist(v, v_sigma);
+        std::normal_distribution<double> ang_dist(0.0, ang_divg_sigma);
         double v0 = vel_dist(gen_rnd);
         double alpha = ang_dist(gen_rnd)*pi/180.0;
-        double beta = ang_dist(gen_rnd)*pi/180.0;
-        double gamma = ang_dist(gen_rnd)*pi/180.0;
         double vx = v0*cos(alpha);
-        double vy = v0*sin(beta);
-        double vz = v0*sin(gamma);
+        double vy = v0*sin(alpha);
+        double vz = v0*sin(alpha);
         std::vector<double> vel_xyz = {vx, vy, vz};
         return vel_xyz;
     };

@@ -83,15 +83,13 @@ def sample_velocities(v, delta_v, divergence):
     # vx is longitudnal velocity of molecular beam 
     # (x-direction in lab frame)
     v_fwhm = v*delta_v/100
-    v0 = np.random.normal(v, v_fwhm/2)  
+    v0 = np.random.normal(v, v_fwhm/np.sqrt(8*np.log(2)))
+    theta = np.random.normal(0, divergence/np.sqrt(8*np.log(2)))*np.pi/180.0  
     # velocity along the laser beam 
     # (z-direction in lab frame)
-    alpha = np.random.normal(0, divergence)*np.pi/180.0
-    beta = np.random.normal(0, divergence)*np.pi/180.0
-    gamma = np.random.normal(0, divergence)*np.pi/180.0 
-    vx = v0*np.cos(alpha)
-    vy = v0*np.sin(beta)
-    vz = v0*np.sin(gamma)
+    vx = v0*np.cos(theta)
+    vy = v0*np.sin(theta)
+    vz = v0*np.sin(theta)
     return vx, vy, vz
 
 def plot_property_data(data, x_key, param_key, title='', 
@@ -116,7 +114,7 @@ def plot_property_data(data, x_key, param_key, title='',
         ax.set_xlim(xlim[0], xlim[1])
     ax.set_title(title)
     if save_fig:
-        fig.savefig(filename, dpi=300)
+        fig.savefig(filename, dpi=350)
     return fig, ax
 
 # from scipy.integrate import solve_ivp
