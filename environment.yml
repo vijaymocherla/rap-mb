@@ -14,6 +14,10 @@ dependencies:
   - notebook
   - sundials
   - mkl-devel
+  - mkl
+  - tbb-devel
+  - onemkl-sycl-blas
+  - onemkl-sycl-lapack
   - dpcpp-cpp-rt 
   - dpcpp_linux-64
   - intel-cmplr-lib-rt 
