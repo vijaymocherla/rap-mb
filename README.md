@@ -39,7 +39,7 @@ To build the package, first clone this repository and then install the dependenc
 ```
 git clone github.com/vijaymocherla/rap-mb
 cd rap_mb
-conda env create --file=environments.yml
+conda env create --file=environment.yml
 conda activate rap-mb
 pip install -e .
 ``` 
